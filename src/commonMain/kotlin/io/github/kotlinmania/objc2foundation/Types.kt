@@ -16,6 +16,11 @@ typealias NSUInteger = ULong
 typealias NSTimeInterval = Double
 
 /**
+ * CoreGraphics float type.
+ */
+typealias CGFloat = Double
+
+/**
  * Apple MacTypes.h definitions.
  */
 typealias MacBoolean = UByte

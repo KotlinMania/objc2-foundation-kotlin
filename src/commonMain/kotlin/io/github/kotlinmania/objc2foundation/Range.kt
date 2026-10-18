@@ -8,7 +8,6 @@ data class NSRange(
     val location: NSUInteger = 0uL,
     val length: NSUInteger = 0uL,
 ) : Comparable<NSRange> {
-
     companion object {
         const val ENCODING: String = "{_NSRange=QQ}"
         const val ENCODING_REF: String = "^{_NSRange=QQ}"
@@ -44,13 +43,12 @@ data class NSRange(
 
     fun isEmpty(): Boolean = length == 0uL
 
-    fun contains(index: NSUInteger): Boolean {
-        return if (index >= location) {
+    fun contains(index: NSUInteger): Boolean =
+        if (index >= location) {
             (index - location) < length
         } else {
             false
         }
-    }
 
     fun contains(index: Long): Boolean = contains(index.toULong())
 

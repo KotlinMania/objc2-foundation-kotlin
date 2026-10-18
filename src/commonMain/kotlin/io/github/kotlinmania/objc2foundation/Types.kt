@@ -39,3 +39,15 @@ const val NSTimeIntervalSince1970: Double = 978307200.0
  * Returned by NSURLResponse when expected content length is unknown.
  */
 const val NSURLResponseUnknownLength: Long = -1L
+
+/**
+ * Objective-C integer boundary constants.
+ */
+const val NSIntegerMax: NSInteger = Long.MAX_VALUE
+const val NSIntegerMin: NSInteger = Long.MIN_VALUE
+const val NSUIntegerMax: NSUInteger = ULong.MAX_VALUE
+
+/**
+ * Constant returned by search/query methods when an item is not found.
+ */
+const val NSNotFound: NSInteger = NSIntegerMax

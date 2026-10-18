@@ -8,7 +8,6 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class MutableDictionaryTest {
-
     private fun sampleDict(): NSMutableDictionary<NSNumber, NSObject> {
         val keys = listOf(NSNumber.new_i32(1), NSNumber.new_i32(2), NSNumber.new_i32(3))
         val objs = listOf(NSObject(), NSObject(), NSObject())

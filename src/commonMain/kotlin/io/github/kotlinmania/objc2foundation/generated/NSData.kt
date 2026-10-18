@@ -1,10 +1,14 @@
 // port-lint: source generated/NSData.rs
-package io.github.kotlinmania.objc2foundation
+package io.github.kotlinmania.objc2foundation.generated
+
+import io.github.kotlinmania.objc2foundation.NSUInteger
 
 /**
  * Options for data reading.
  */
-data class NSDataReadingOptions(val rawValue: NSUInteger) {
+data class NSDataReadingOptions(
+    val rawValue: NSUInteger,
+) {
     companion object {
         val MappedIfSafe = NSDataReadingOptions(1uL)
         val Uncached = NSDataReadingOptions(2uL)
@@ -15,7 +19,9 @@ data class NSDataReadingOptions(val rawValue: NSUInteger) {
 /**
  * Options for data writing.
  */
-data class NSDataWritingOptions(val rawValue: NSUInteger) {
+data class NSDataWritingOptions(
+    val rawValue: NSUInteger,
+) {
     companion object {
         val Atomic = NSDataWritingOptions(1uL)
         val WithoutOverwriting = NSDataWritingOptions(2uL)
@@ -27,7 +33,9 @@ data class NSDataWritingOptions(val rawValue: NSUInteger) {
 /**
  * Options for searching data.
  */
-data class NSDataSearchOptions(val rawValue: NSUInteger) {
+data class NSDataSearchOptions(
+    val rawValue: NSUInteger,
+) {
     companion object {
         val Backwards = NSDataSearchOptions(1uL)
         val Anchored = NSDataSearchOptions(2uL)
@@ -37,7 +45,9 @@ data class NSDataSearchOptions(val rawValue: NSUInteger) {
 /**
  * Base64 encoding options.
  */
-data class NSDataBase64EncodingOptions(val rawValue: NSUInteger) {
+data class NSDataBase64EncodingOptions(
+    val rawValue: NSUInteger,
+) {
     companion object {
         val Encoding64CharacterLineLength = NSDataBase64EncodingOptions(1uL)
         val Encoding76CharacterLineLength = NSDataBase64EncodingOptions(2uL)
@@ -49,7 +59,9 @@ data class NSDataBase64EncodingOptions(val rawValue: NSUInteger) {
 /**
  * Base64 decoding options.
  */
-data class NSDataBase64DecodingOptions(val rawValue: NSUInteger) {
+data class NSDataBase64DecodingOptions(
+    val rawValue: NSUInteger,
+) {
     companion object {
         val IgnoreUnknownCharacters = NSDataBase64DecodingOptions(1uL)
     }

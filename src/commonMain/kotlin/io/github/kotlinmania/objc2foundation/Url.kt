@@ -1,6 +1,8 @@
 // port-lint: source url.rs
 package io.github.kotlinmania.objc2foundation
 
+import io.github.kotlinmania.objc2foundation.generated.NSURL
+
 const val PATH_MAX: Int = 1024
 
 fun NSURL.Companion.fromPath(

@@ -20,6 +20,7 @@ interface MutableCopyingHelper<out R> {
  */
 interface NSCopying : CopyingHelper<Any> {
     override fun copy(): Any
+
     fun copyWithZone(zone: NSZone?): Any = copy()
 }
 
@@ -28,5 +29,6 @@ interface NSCopying : CopyingHelper<Any> {
  */
 interface NSMutableCopying : MutableCopyingHelper<Any> {
     override fun mutableCopy(): Any
+
     fun mutableCopyWithZone(zone: NSZone?): Any = mutableCopy()
 }

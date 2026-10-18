@@ -8,7 +8,6 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 class NumberTest {
-
     @Test
     fun basic() {
         val val_ = NSNumber.new_u32(13u)

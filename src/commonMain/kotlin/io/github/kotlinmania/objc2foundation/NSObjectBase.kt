@@ -5,7 +5,9 @@ package io.github.kotlinmania.objc2foundation
  */
 open class NSObject : NSObjectProtocol {
     override fun isEqual(other: Any?): Boolean = this == other
+
     override fun hash(): NSUInteger = hashCode().toULong()
+
     override fun toString(): String = "NSObject@${hashCode().toUInt().toString(16)}"
 }
 
@@ -14,6 +16,7 @@ open class NSObject : NSObjectProtocol {
  */
 interface NSObjectProtocol {
     fun isEqual(other: Any?): Boolean
+
     fun hash(): NSUInteger
 }
 

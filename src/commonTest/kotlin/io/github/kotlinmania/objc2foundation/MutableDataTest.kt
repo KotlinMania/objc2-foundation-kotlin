@@ -7,7 +7,6 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class MutableDataTest {
-
     @Test
     fun testBytesMut() {
         val data = NSMutableData.with_bytes(byteArrayOf(7, 16))

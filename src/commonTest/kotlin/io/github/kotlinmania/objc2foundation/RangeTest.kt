@@ -8,15 +8,15 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class RangeTest {
-
     @Test
     fun testFromRange() {
-        val cases = listOf(
-            (0L until 0L) to NSRange.new(0L, 0L),
-            (0L until 10L) to NSRange.new(0L, 10L),
-            (10L until 10L) to NSRange.new(10L, 0L),
-            (10L until 20L) to NSRange.new(10L, 10L),
-        )
+        val cases =
+            listOf(
+                (0L until 0L) to NSRange.new(0L, 0L),
+                (0L until 10L) to NSRange.new(0L, 10L),
+                (10L until 10L) to NSRange.new(10L, 0L),
+                (10L until 20L) to NSRange.new(10L, 10L),
+            )
 
         for ((range, expected) in cases) {
             assertEquals(expected, NSRange.from(range))

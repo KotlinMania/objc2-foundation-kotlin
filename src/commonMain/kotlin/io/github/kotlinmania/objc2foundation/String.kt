@@ -1,19 +1,27 @@
 // port-lint: source string.rs
 package io.github.kotlinmania.objc2foundation
 
+import io.github.kotlinmania.objc2foundation.generated.unichar
+
 /**
  * An immutable string of Unicode characters.
  */
-open class NSString : NSObject, NSCopying, NSMutableCopying, Comparable<NSString> {
+open class NSString :
+    NSObject,
+    NSCopying,
+    NSMutableCopying,
+    Comparable<NSString> {
+    private val fixedString: String
 
     open val rawString: String
+        get() = fixedString
 
     constructor() : super() {
-        this.rawString = ""
+        this.fixedString = ""
     }
 
     constructor(string: String) : super() {
-        this.rawString = string
+        this.fixedString = string
     }
 
     companion object {
@@ -24,11 +32,12 @@ open class NSString : NSObject, NSCopying, NSMutableCopying, Comparable<NSString
         fun fromStr(string: String): NSString = from_str(string)
 
         internal fun initWithStr(string: String): NSString {
-            val processed = if (string.startsWith("\uFEFF")) {
-                string.substring(1)
-            } else {
-                string
-            }
+            val processed =
+                if (string.startsWith("\uFEFF")) {
+                    string.substring(1)
+                } else {
+                    string
+                }
             return NSString(processed)
         }
     }
@@ -75,11 +84,12 @@ open class NSString : NSObject, NSCopying, NSMutableCopying, Comparable<NSString
         val comp = str.rawString
         if (rawString.isEmpty()) return NSString(comp)
         if (comp.isEmpty()) return this
-        val base = if (rawString.endsWith("/") && rawString.length > 1) {
-            rawString.trimEnd('/')
-        } else {
-            rawString
-        }
+        val base =
+            if (rawString.endsWith("/") && rawString.length > 1) {
+                rawString.trimEnd('/')
+            } else {
+                rawString
+            }
         return if (base == "/") {
             NSString("/$comp")
         } else {
@@ -109,7 +119,6 @@ open class NSString : NSObject, NSCopying, NSMutableCopying, Comparable<NSString
  * A mutable string of Unicode characters.
  */
 open class NSMutableString : NSString {
-
     private val builder: StringBuilder
 
     override val rawString: String
@@ -119,8 +128,8 @@ open class NSMutableString : NSString {
         this.builder = StringBuilder()
     }
 
-    constructor(initial: String) : super("") {
-        this.builder = StringBuilder(initial)
+    constructor(string: String) : super("") {
+        this.builder = StringBuilder(string)
     }
 
     constructor(builder: StringBuilder) : super("") {
@@ -131,11 +140,12 @@ open class NSMutableString : NSString {
         fun new(): NSMutableString = NSMutableString()
 
         fun from_str(string: String): NSMutableString {
-            val processed = if (string.startsWith("\uFEFF")) {
-                string.substring(1)
-            } else {
-                string
-            }
+            val processed =
+                if (string.startsWith("\uFEFF")) {
+                    string.substring(1)
+                } else {
+                    string
+                }
             return NSMutableString(processed)
         }
 
@@ -169,11 +179,16 @@ open class NSMutableString : NSString {
     }
 
     fun deleteCharactersInRange(range: NSRange) {
-        builder.delete(range.location.toInt(), range.end().toInt())
+        val start = range.location.toInt()
+        val end = range.end().toInt()
+        builder.deleteRange(start, end)
     }
 
     fun replaceCharactersInRangeWithString(range: NSRange, str: NSString) {
-        builder.replace(range.location.toInt(), range.end().toInt(), str.rawString)
+        val start = range.location.toInt()
+        val end = range.end().toInt()
+        builder.deleteRange(start, end)
+        builder.insert(start, str.rawString)
     }
 
     override fun copy(): NSString = NSString(rawString)

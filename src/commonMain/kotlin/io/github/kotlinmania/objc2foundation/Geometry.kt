@@ -5,6 +5,14 @@ data class CGPoint(
     val x: CGFloat = 0.0,
     val y: CGFloat = 0.0,
 ) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is CGPoint) return false
+        return this.x == other.x && this.y == other.y
+    }
+
+    override fun hashCode(): Int = 31 * x.hashCode() + y.hashCode()
+
     companion object {
         const val ENCODING: String = "{CGPoint=dd}"
         const val ENCODING_REF: String = "^{CGPoint=dd}"
@@ -19,6 +27,14 @@ data class CGSize(
     val width: CGFloat = 0.0,
     val height: CGFloat = 0.0,
 ) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is CGSize) return false
+        return this.width == other.width && this.height == other.height
+    }
+
+    override fun hashCode(): Int = 31 * width.hashCode() + height.hashCode()
+
     companion object {
         const val ENCODING: String = "{CGSize=dd}"
         const val ENCODING_REF: String = "^{CGSize=dd}"
@@ -33,6 +49,14 @@ data class CGRect(
     val origin: CGPoint = CGPoint(),
     val size: CGSize = CGSize(),
 ) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is CGRect) return false
+        return this.origin == other.origin && this.size == other.size
+    }
+
+    override fun hashCode(): Int = 31 * origin.hashCode() + size.hashCode()
+
     companion object {
         const val ENCODING: String = "{CGRect={CGPoint=dd}{CGSize=dd}}"
         const val ENCODING_REF: String = "^{CGRect={CGPoint=dd}{CGSize=dd}}"
@@ -46,7 +70,9 @@ data class CGRect(
 
 typealias NSRect = CGRect
 
-data class NSRectEdge(val rawValue: NSUInteger) {
+data class NSRectEdge(
+    val rawValue: NSUInteger,
+) {
     companion object {
         const val ENCODING: String = "Q"
         const val ENCODING_REF: String = "^Q"

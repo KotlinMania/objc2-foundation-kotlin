@@ -6,7 +6,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
 class FastEnumerationStateTest {
-
     @Test
     fun testDefault() {
         val s1 = NSFastEnumerationState()

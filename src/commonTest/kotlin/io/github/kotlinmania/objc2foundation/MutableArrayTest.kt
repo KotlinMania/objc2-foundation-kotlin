@@ -7,7 +7,6 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 
 class MutableArrayTest {
-
     @Test
     fun testCreation() {
         val a1 = NSMutableArray.from_retained_slice(emptyList<NSNumber>())
@@ -26,9 +25,10 @@ class MutableArrayTest {
 
     @Test
     fun testAllowedMutationWhileIterating() {
-        val array = NSMutableArray.from_retained_slice(
-            listOf(NSMutableString.new(), NSMutableString.new())
-        )
+        val array =
+            NSMutableArray.from_retained_slice(
+                listOf(NSMutableString.new(), NSMutableString.new()),
+            )
         val toAdd = NSString.from_str("test")
 
         for (s in array) {
@@ -44,7 +44,7 @@ class MutableArrayTest {
         val array = NSMutableArray.from_retained_slice(listOf(NSObject(), NSObject()))
         assertFailsWith<ConcurrentModificationException> {
             for (item in array) {
-                array.addObject(NSObject())
+                array.removeObject(item)
             }
         }
     }

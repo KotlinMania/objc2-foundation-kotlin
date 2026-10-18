@@ -5,7 +5,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ComparisonResultTest {
-
     @Test
     fun testDefault() {
         assertEquals(NSComparisonResult.Same, NSComparisonResult.default())

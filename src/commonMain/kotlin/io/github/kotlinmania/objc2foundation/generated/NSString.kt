@@ -1,5 +1,8 @@
 // port-lint: source generated/NSString.rs
-package io.github.kotlinmania.objc2foundation
+package io.github.kotlinmania.objc2foundation.generated
+
+import io.github.kotlinmania.objc2foundation.NSString
+import io.github.kotlinmania.objc2foundation.NSUInteger
 
 /**
  * 16-bit unicode character.
@@ -9,7 +12,9 @@ typealias unichar = UShort
 /**
  * Options for string searching and comparison.
  */
-data class NSStringCompareOptions(val rawValue: NSUInteger) {
+data class NSStringCompareOptions(
+    val rawValue: NSUInteger,
+) {
     companion object {
         val CaseInsensitiveSearch = NSStringCompareOptions(1uL)
         val LiteralSearch = NSStringCompareOptions(2uL)
@@ -55,7 +60,9 @@ const val NSUTF32LittleEndianStringEncoding: NSStringEncoding = 0x9c000100uL
 /**
  * Options for string enumeration.
  */
-data class NSStringEnumerationOptions(val rawValue: NSUInteger) {
+data class NSStringEnumerationOptions(
+    val rawValue: NSUInteger,
+) {
     companion object {
         val ByLines = NSStringEnumerationOptions(0uL)
         val ByParagraphs = NSStringEnumerationOptions(1uL)

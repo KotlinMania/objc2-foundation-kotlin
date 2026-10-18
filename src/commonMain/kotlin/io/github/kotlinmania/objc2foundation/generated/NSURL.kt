@@ -1,5 +1,10 @@
 // port-lint: source generated/NSURL.rs
-package io.github.kotlinmania.objc2foundation
+package io.github.kotlinmania.objc2foundation.generated
+
+import io.github.kotlinmania.objc2foundation.NSCopying
+import io.github.kotlinmania.objc2foundation.NSObject
+import io.github.kotlinmania.objc2foundation.NSString
+import io.github.kotlinmania.objc2foundation.NSUInteger
 
 typealias NSURLResourceKey = NSString
 
@@ -19,15 +24,21 @@ val NSURLIsUserImmutableKey: NSURLResourceKey = NSString("NSURLIsUserImmutableKe
 val NSURLIsHiddenKey: NSURLResourceKey = NSString("NSURLIsHiddenKey")
 val NSURLHasHiddenExtensionKey: NSURLResourceKey = NSString("NSURLHasHiddenExtensionKey")
 
-data class NSURLBookmarkCreationOptions(val rawValue: NSUInteger)
-data class NSURLBookmarkResolutionOptions(val rawValue: NSUInteger)
+data class NSURLBookmarkCreationOptions(
+    val rawValue: NSUInteger,
+)
+
+data class NSURLBookmarkResolutionOptions(
+    val rawValue: NSUInteger,
+)
 typealias NSURLBookmarkFileCreationOptions = NSUInteger
 
 /**
  * An object that represents the location of a resource.
  */
-open class NSURL : NSObject, NSCopying {
-
+open class NSURL :
+    NSObject,
+    NSCopying {
     val stringRepresentation: String
     val isDirectory: Boolean
     val baseURL: NSURL?

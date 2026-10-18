@@ -4,16 +4,22 @@ package io.github.kotlinmania.objc2foundation
 /**
  * An immutable, ordered collection of objects.
  */
-open class NSArray<T : Any> : NSObject, NSCopying, NSMutableCopying, Iterable<T> {
+open class NSArray<T : Any> :
+    NSObject,
+    NSCopying,
+    NSMutableCopying,
+    Iterable<T> {
+    private val fixedList: List<T>
 
     protected open val list: List<T>
+        get() = fixedList
 
     constructor() : super() {
-        this.list = emptyList()
+        this.fixedList = emptyList()
     }
 
     constructor(elements: List<T>) : super() {
-        this.list = elements.toList()
+        this.fixedList = elements.toList()
     }
 
     companion object {
@@ -87,11 +93,34 @@ open class NSArray<T : Any> : NSObject, NSCopying, NSMutableCopying, Iterable<T>
  * A mutable, ordered collection of objects.
  */
 open class NSMutableArray<T : Any> : NSArray<T> {
-
     private val mutableList: MutableList<T>
+    private var modCount = 0L
 
     override val list: List<T>
         get() = mutableList
+
+    override fun iterator(): Iterator<T> =
+        object : Iterator<T> {
+            private val expectedModCount = modCount
+            private var index = 0
+
+            override fun hasNext(): Boolean {
+                checkModCount()
+                return index < mutableList.size
+            }
+
+            override fun next(): T {
+                checkModCount()
+                if (index >= mutableList.size) throw NoSuchElementException()
+                return mutableList[index++]
+            }
+
+            private fun checkModCount() {
+                if (expectedModCount != modCount) {
+                    throw ConcurrentModificationException("mutation detected during enumeration")
+                }
+            }
+        }
 
     constructor() : super() {
         this.mutableList = mutableListOf()
@@ -128,23 +157,39 @@ open class NSMutableArray<T : Any> : NSArray<T> {
 
     fun addObject(anObject: T) {
         mutableList.add(anObject)
+        modCount++
     }
 
     fun insertObjectAtIndex(anObject: T, index: NSUInteger) {
         mutableList.add(index.toInt(), anObject)
+        modCount++
     }
 
-    fun removeLastObject(): T? =
-        if (mutableList.isNotEmpty()) mutableList.removeAt(mutableList.size - 1) else null
+    fun removeLastObject(): T? {
+        if (mutableList.isEmpty()) return null
+        modCount++
+        return mutableList.removeAt(mutableList.size - 1)
+    }
 
-    fun removeObjectAtIndex(index: NSUInteger): T =
-        mutableList.removeAt(index.toInt())
+    fun removeObjectAtIndex(index: NSUInteger): T {
+        modCount++
+        return mutableList.removeAt(index.toInt())
+    }
 
-    fun replaceObjectAtIndexWithObject(index: NSUInteger, anObject: T): T =
-        mutableList.set(index.toInt(), anObject)
+    fun removeObject(anObject: T): Boolean {
+        val removed = mutableList.remove(anObject)
+        if (removed) modCount++
+        return removed
+    }
+
+    fun replaceObjectAtIndexWithObject(index: NSUInteger, anObject: T): T {
+        modCount++
+        return mutableList.set(index.toInt(), anObject)
+    }
 
     fun removeAllObjects() {
         mutableList.clear()
+        modCount++
     }
 
     override fun copy(): NSArray<T> = NSArray(mutableList)

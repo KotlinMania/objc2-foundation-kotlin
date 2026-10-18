@@ -4,31 +4,37 @@ package io.github.kotlinmania.objc2foundation
 /**
  * An immutable, unordered collection of unique objects.
  */
-open class NSSet<T : Any> : NSObject, NSCopying, NSMutableCopying, Iterable<T> {
+open class NSSet<T : Any> :
+    NSObject,
+    NSCopying,
+    NSMutableCopying,
+    Iterable<T> {
+    private val fixedSet: Set<T>
 
     protected open val set: Set<T>
+        get() = fixedSet
 
     constructor() : super() {
-        this.set = emptySet()
+        this.fixedSet = emptySet()
     }
 
-    constructor(elements: Collection<T>) : super() {
-        this.set = elements.toSet()
+    constructor(elements: Set<T>) : super() {
+        this.fixedSet = elements.toSet()
     }
 
     companion object {
         fun <T : Any> new(): NSSet<T> = NSSet()
 
-        fun <T : Any> from_slice(slice: List<T>): NSSet<T> = NSSet(slice)
+        fun <T : Any> from_slice(slice: List<T>): NSSet<T> = NSSet(slice.toSet())
 
         fun <T : Any> fromSlice(slice: List<T>): NSSet<T> = from_slice(slice)
 
-        fun <T : Any> from_retained_slice(slice: List<T>): NSSet<T> = NSSet(slice)
+        fun <T : Any> from_retained_slice(slice: List<T>): NSSet<T> = NSSet(slice.toSet())
 
         fun <T : Any> fromRetainedSlice(slice: List<T>): NSSet<T> = from_retained_slice(slice)
 
         fun <T : Any> setWithObjects(vararg objects: T): NSSet<T> =
-            NSSet(objects.toList())
+            NSSet(objects.toSet())
     }
 
     open fun count(): NSUInteger = set.size.toULong()
@@ -70,7 +76,6 @@ open class NSSet<T : Any> : NSObject, NSCopying, NSMutableCopying, Iterable<T> {
  * A mutable, unordered collection of unique objects.
  */
 open class NSMutableSet<T : Any> : NSSet<T> {
-
     private val mutableSet: MutableSet<T>
 
     override val set: Set<T>
@@ -80,7 +85,7 @@ open class NSMutableSet<T : Any> : NSSet<T> {
         this.mutableSet = mutableSetOf()
     }
 
-    constructor(elements: Collection<T>) : super() {
+    constructor(elements: Set<T>) : super() {
         this.mutableSet = elements.toMutableSet()
     }
 
@@ -110,7 +115,7 @@ open class NSMutableSet<T : Any> : NSSet<T> {
         mutableSet.clear()
     }
 
-    override fun copy(): NSSet<T> = NSSet(mutableSet)
+    override fun copy(): NSSet<T> = NSSet(mutableSet.toSet())
 
-    override fun mutableCopy(): NSMutableSet<T> = NSMutableSet(mutableSet)
+    override fun mutableCopy(): NSMutableSet<T> = NSMutableSet(mutableSet.toSet())
 }

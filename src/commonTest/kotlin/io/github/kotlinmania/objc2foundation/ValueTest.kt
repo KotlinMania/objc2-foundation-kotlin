@@ -7,7 +7,6 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
 
 class ValueTest {
-
     @Test
     fun basic() {
         val val_ = NSValue.new(13u)

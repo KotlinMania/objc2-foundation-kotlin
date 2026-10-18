@@ -6,7 +6,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class MutableStringTest {
-
     @Test
     fun displayDebug() {
         val s = NSMutableString.from_str("test\"123")
@@ -48,11 +47,11 @@ class MutableStringTest {
         val s1 = NSMutableString.from_str("abc")
         val s2 = s1.copy()
         assertEquals(s1.rawString, s2.rawString)
-        assertTrue(s2 is NSString)
+        assertEquals(NSString::class, s2::class)
 
         val s3 = s1.mutableCopy()
         assertEquals(s1.rawString, s3.rawString)
-        assertTrue(s3 is NSMutableString)
+        assertEquals(NSMutableString::class, s3::class)
         assertTrue(s1 !== s3)
     }
 

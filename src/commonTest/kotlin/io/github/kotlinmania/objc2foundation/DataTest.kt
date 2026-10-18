@@ -6,7 +6,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class DataTest {
-
     @Test
     fun testBytes() {
         val bytes = byteArrayOf(3, 7, 16, 52, 112, 19)

@@ -7,8 +7,8 @@ package io.github.kotlinmania.objc2foundation
 open class NSNumber(
     val numberValue: Number,
     objCType: String,
-) : NSValue(numberValue, objCType), Comparable<NSNumber> {
-
+) : NSValue(numberValue, objCType),
+    Comparable<NSNumber> {
     companion object {
         fun new_bool(val_: Boolean): NSNumber =
             NSNumber(if (val_) 1 else 0, "c")

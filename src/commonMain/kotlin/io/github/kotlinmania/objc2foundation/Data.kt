@@ -4,16 +4,21 @@ package io.github.kotlinmania.objc2foundation
 /**
  * An immutable buffer of bytes.
  */
-open class NSData : NSObject, NSCopying, NSMutableCopying {
+open class NSData :
+    NSObject,
+    NSCopying,
+    NSMutableCopying {
+    private val fixedBytes: ByteArray
 
     protected open val internalBytes: ByteArray
+        get() = fixedBytes
 
     constructor() : super() {
-        this.internalBytes = ByteArray(0)
+        this.fixedBytes = ByteArray(0)
     }
 
     constructor(bytes: ByteArray) : super() {
-        this.internalBytes = bytes.copyOf()
+        this.fixedBytes = bytes.copyOf()
     }
 
     companion object {
@@ -69,22 +74,25 @@ open class NSData : NSObject, NSCopying, NSMutableCopying {
  * A mutable buffer of bytes.
  */
 open class NSMutableData : NSData {
-
-    private val mutableList: MutableList<Byte>
+    private var buffer: ByteArray
+    private var size: Int
 
     override val internalBytes: ByteArray
-        get() = mutableList.toByteArray()
+        get() = buffer.copyOf(size)
 
     constructor() : super() {
-        this.mutableList = mutableListOf()
+        this.buffer = ByteArray(0)
+        this.size = 0
     }
 
     constructor(bytes: ByteArray) : super() {
-        this.mutableList = bytes.toMutableList()
+        this.buffer = bytes.copyOf()
+        this.size = bytes.size
     }
 
     constructor(initialCapacity: Int) : super() {
-        this.mutableList = ArrayList(initialCapacity)
+        this.buffer = ByteArray(initialCapacity)
+        this.size = 0
     }
 
     companion object {
@@ -109,38 +117,42 @@ open class NSMutableData : NSData {
             dataWithCapacity(capacity.toInt())
     }
 
-    override fun length(): NSUInteger = mutableList.size.toULong()
+    override fun length(): NSUInteger = size.toULong()
 
-    override fun len(): Int = mutableList.size
+    override fun len(): Int = size
 
-    override fun is_empty(): Boolean = mutableList.isEmpty()
+    override fun is_empty(): Boolean = size == 0
 
-    override fun isEmpty(): Boolean = mutableList.isEmpty()
+    override fun isEmpty(): Boolean = size == 0
 
-    override fun to_vec(): ByteArray = mutableList.toByteArray()
+    override fun to_vec(): ByteArray = buffer.copyOf(size)
 
     override fun toVec(): ByteArray = to_vec()
 
-    fun as_mut_bytes_unchecked(): MutableList<Byte> = mutableList
+    fun as_mut_bytes_unchecked(): ByteArray = buffer
+
+    private fun ensureCapacity(minCapacity: Int) {
+        if (minCapacity > buffer.size) {
+            val newCapacity = maxOf(minCapacity, buffer.size * 2 + 1)
+            buffer = buffer.copyOf(newCapacity)
+        }
+    }
 
     fun setLength(newLength: Int) {
-        if (newLength < mutableList.size) {
-            while (mutableList.size > newLength) {
-                mutableList.removeAt(mutableList.size - 1)
-            }
-        } else {
-            while (mutableList.size < newLength) {
-                mutableList.add(0)
-            }
+        require(newLength >= 0)
+        if (newLength > size) {
+            ensureCapacity(newLength)
+            buffer.fill(0, size, newLength)
         }
+        size = newLength
     }
 
     fun setLength(newLength: NSUInteger) = setLength(newLength.toInt())
 
     fun extend_from_slice(bytes: ByteArray) {
-        for (b in bytes) {
-            mutableList.add(b)
-        }
+        ensureCapacity(size + bytes.size)
+        bytes.copyInto(buffer, destinationOffset = size)
+        size += bytes.size
     }
 
     fun appendBytes(bytes: ByteArray) = extend_from_slice(bytes)
@@ -148,38 +160,41 @@ open class NSMutableData : NSData {
     fun appendData(other: NSData) = extend_from_slice(other.to_vec())
 
     fun extend(range: IntRange) {
-        for (i in range) {
-            mutableList.add(i.toByte())
+        val count = if (range.isEmpty()) 0 else (range.last - range.first + 1)
+        ensureCapacity(size + count)
+        var i = size
+        for (v in range) {
+            buffer[i++] = v.toByte()
         }
+        size += count
     }
 
     fun extend(data: NSData) = extend_from_slice(data.to_vec())
 
     fun replace_range(range: LongRange, bytes: ByteArray) {
         val start = range.first.toInt()
-        val count = if (range.isEmpty()) 0 else (range.last - range.first + 1).toInt()
-        repeat(count) {
-            if (start < mutableList.size) {
-                mutableList.removeAt(start)
-            }
+        val removeCount = if (range.isEmpty()) 0 else (range.last - range.first + 1).toInt()
+        val insertCount = bytes.size
+        val newSize = size - removeCount + insertCount
+        ensureCapacity(newSize)
+        val tailStart = start + removeCount
+        val tailLength = size - tailStart
+        if (tailLength > 0) {
+            buffer.copyInto(buffer, destinationOffset = start + insertCount, startIndex = tailStart, endIndex = size)
         }
-        var insertIdx = start
-        for (b in bytes) {
-            mutableList.add(insertIdx++, b)
-        }
+        bytes.copyInto(buffer, destinationOffset = start)
+        size = newSize
     }
 
     fun replace_range(range: IntRange, bytes: ByteArray) =
         replace_range(range.first.toLong()..range.last.toLong(), bytes)
 
     fun set_bytes(bytes: ByteArray) {
-        mutableList.clear()
-        for (b in bytes) {
-            mutableList.add(b)
-        }
+        this.buffer = bytes.copyOf()
+        this.size = bytes.size
     }
 
-    override fun copy(): NSData = NSData(mutableList.toByteArray())
+    override fun copy(): NSData = NSData(to_vec())
 
-    override fun mutableCopy(): NSMutableData = NSMutableData(mutableList.toByteArray())
+    override fun mutableCopy(): NSMutableData = NSMutableData(to_vec())
 }

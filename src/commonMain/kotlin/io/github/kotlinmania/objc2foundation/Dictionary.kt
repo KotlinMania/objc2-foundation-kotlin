@@ -4,16 +4,21 @@ package io.github.kotlinmania.objc2foundation
 /**
  * An immutable collection of key-value pairs.
  */
-open class NSDictionary<K : Any, V : Any> : NSObject, NSCopying, NSMutableCopying {
+open class NSDictionary<K : Any, V : Any> :
+    NSObject,
+    NSCopying,
+    NSMutableCopying {
+    private val fixedMap: Map<K, V>
 
     protected open val map: Map<K, V>
+        get() = fixedMap
 
     constructor() : super() {
-        this.map = emptyMap()
+        this.fixedMap = emptyMap()
     }
 
     constructor(entries: Map<K, V>) : super() {
-        this.map = entries.toMap()
+        this.fixedMap = entries.toMap()
     }
 
     companion object {
@@ -76,7 +81,6 @@ open class NSDictionary<K : Any, V : Any> : NSObject, NSCopying, NSMutableCopyin
  * A mutable collection of key-value pairs.
  */
 open class NSMutableDictionary<K : Any, V : Any> : NSDictionary<K, V> {
-
     private val mutableMap: MutableMap<K, V>
 
     override val map: Map<K, V>

@@ -9,7 +9,6 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class SetTest {
-
     @Test
     fun testNew() {
         val set = NSSet.new<NSObject>()
@@ -48,9 +47,10 @@ class SetTest {
         val set2 = NSSet.from_slice(listOf(ns_string("one"), ns_string("two"), ns_string("two")))
         assertEquals(2, set2.len())
 
-        val set3 = NSSet.from_retained_slice(
-            listOf(NSNumber.new_i32(1), NSNumber.new_i32(2), NSNumber.new_i32(3))
-        )
+        val set3 =
+            NSSet.from_retained_slice(
+                listOf(NSNumber.new_i32(1), NSNumber.new_i32(2), NSNumber.new_i32(3)),
+            )
         assertEquals(3, set3.len())
     }
 

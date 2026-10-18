@@ -8,7 +8,6 @@ import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 class StringTest {
-
     @Test
     fun testEquality() {
         val s1 = NSString.from_str("abc")
@@ -78,7 +77,7 @@ class StringTest {
 
         val s3 = s1.mutableCopy()
         assertEquals(s1, s3)
-        assertTrue(s3 is NSMutableString)
+        assertEquals(NSMutableString::class, s3::class)
     }
 
     @Test
@@ -180,21 +179,22 @@ class StringTest {
 
     @Test
     fun testMacro() {
-        val samples = listOf(
-            "",
-            "asdf",
-            "🦀",
-            "🏳️‍🌈",
-            "𝄞music",
-            "abcd【e】fg",
-            "abcd⒠fg",
-            "ääääh",
-            "lööps, bröther?",
-            "\uFFFD \uFFFD \uFFFD",
-            "讓每個人都能打造出。",
-            "\u0000",
-            "\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\u0008\u0009",
-        )
+        val samples =
+            listOf(
+                "",
+                "asdf",
+                "🦀",
+                "🏳️‍🌈",
+                "𝄞music",
+                "abcd【e】fg",
+                "abcd⒠fg",
+                "ääääh",
+                "lööps, bröther?",
+                "\uFFFD \uFFFD \uFFFD",
+                "讓每個人都能打造出。",
+                "\u0000",
+                "\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\u0008\u0009",
+            )
 
         for (sample in samples) {
             val s1 = ns_string(sample)

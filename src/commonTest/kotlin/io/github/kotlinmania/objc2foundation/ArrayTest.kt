@@ -5,10 +5,8 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
-import kotlin.test.assertTrue
 
 class ArrayTest {
-
     private fun sampleArray(len: Int): NSArray<NSObject> {
         val list = List(len) { NSObject() }
         return NSArray.from_slice(list)
@@ -87,6 +85,7 @@ class ArrayTest {
 
         var count = 0
         for (item in array) {
+            assertEquals(count.toUByte(), item.as_u8())
             count++
         }
         assertEquals(4, count)

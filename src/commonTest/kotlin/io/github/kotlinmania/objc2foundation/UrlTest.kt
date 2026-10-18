@@ -1,12 +1,12 @@
 // port-lint: tests url.rs
 package io.github.kotlinmania.objc2foundation
 
+import io.github.kotlinmania.objc2foundation.generated.NSURL
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 class UrlTest {
-
     @Test
     fun invalidPath() {
         assertNull(NSURL.from_file_path(""))

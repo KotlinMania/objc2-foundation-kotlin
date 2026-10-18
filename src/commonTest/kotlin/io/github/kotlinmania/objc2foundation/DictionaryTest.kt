@@ -8,7 +8,6 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 class DictionaryTest {
-
     private fun sampleDict(key: String): NSDictionary<NSString, NSObject> {
         val string = NSString.from_str(key)
         val obj = NSObject()

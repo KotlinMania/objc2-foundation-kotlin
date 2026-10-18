@@ -7,28 +7,29 @@ package io.github.kotlinmania.objc2foundation
 open class NSValue(
     open val rawValue: Any,
     open val objCType: String,
-) : NSObject(), NSCopying {
-
+) : NSObject(),
+    NSCopying {
     companion object {
         fun <T : Any> new(value: T): NSValue {
-            val enc = when (value) {
-                is Boolean -> "B"
-                is Byte -> "c"
-                is UByte -> "C"
-                is Short -> "s"
-                is UShort -> "S"
-                is Int -> "i"
-                is UInt -> "I"
-                is Long -> "q"
-                is ULong -> "Q"
-                is Float -> "f"
-                is Double -> "d"
-                is NSRange -> NSRange.ENCODING
-                is NSPoint -> NSPoint.ENCODING
-                is NSSize -> NSSize.ENCODING
-                is NSRect -> NSRect.ENCODING
-                else -> "@"
-            }
+            val enc =
+                when (value) {
+                    is Boolean -> "B"
+                    is Byte -> "c"
+                    is UByte -> "C"
+                    is Short -> "s"
+                    is UShort -> "S"
+                    is Int -> "i"
+                    is UInt -> "I"
+                    is Long -> "q"
+                    is ULong -> "Q"
+                    is Float -> "f"
+                    is Double -> "d"
+                    is NSRange -> NSRange.ENCODING
+                    is NSPoint -> NSPoint.ENCODING
+                    is NSSize -> NSSize.ENCODING
+                    is NSRect -> NSRect.ENCODING
+                    else -> "@"
+                }
             return NSValue(value, enc)
         }
 
@@ -69,24 +70,25 @@ open class NSValue(
     fun contains_encoding(expected: String): Boolean = objCType == expected
 
     inline fun <reified T> contains_encoding(): Boolean {
-        val enc = when (T::class) {
-            Boolean::class -> "B"
-            Byte::class -> "c"
-            UByte::class -> "C"
-            Short::class -> "s"
-            UShort::class -> "S"
-            Int::class -> "i"
-            UInt::class -> "I"
-            Long::class -> "q"
-            ULong::class -> "Q"
-            Float::class -> "f"
-            Double::class -> "d"
-            NSRange::class -> NSRange.ENCODING
-            NSPoint::class -> NSPoint.ENCODING
-            NSSize::class -> NSSize.ENCODING
-            NSRect::class -> NSRect.ENCODING
-            else -> "@"
-        }
+        val enc =
+            when (T::class) {
+                Boolean::class -> "B"
+                Byte::class -> "c"
+                UByte::class -> "C"
+                Short::class -> "s"
+                UShort::class -> "S"
+                Int::class -> "i"
+                UInt::class -> "I"
+                Long::class -> "q"
+                ULong::class -> "Q"
+                Float::class -> "f"
+                Double::class -> "d"
+                NSRange::class -> NSRange.ENCODING
+                NSPoint::class -> NSPoint.ENCODING
+                NSSize::class -> NSSize.ENCODING
+                NSRect::class -> NSRect.ENCODING
+                else -> "@"
+            }
         return contains_encoding(enc)
     }
 
@@ -101,8 +103,9 @@ open class NSValue(
     override fun hashCode(): Int = 31 * objCType.hashCode() + rawValue.hashCode()
 
     override fun toString(): String {
-        if (rawValue is UByte) {
-            val hex = rawValue.toString(16).padStart(2, '0')
+        val v = rawValue
+        if (v is UByte) {
+            val hex = v.toString(16).padStart(2, '0')
             return "NSValue { encoding: \"$objCType\", bytes: <$hex> }"
         }
         return "NSValue { encoding: \"$objCType\", value: $rawValue }"

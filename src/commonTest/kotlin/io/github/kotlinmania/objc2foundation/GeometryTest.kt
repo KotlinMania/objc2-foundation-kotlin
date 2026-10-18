@@ -5,31 +5,31 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class GeometryTest {
-
     @Test
     fun testPartialEq() {
         val epsilon = 2.220446049250313e-16
         val minPositive = Double.MIN_VALUE
 
-        val cases = listOf(
-            0.0 to 0.0,
-            -0.0 to -0.0,
-            0.0 to -0.0,
-            1.0 to (1.0 + epsilon),
-            0.0 to minPositive,
-            0.0 to epsilon,
-            1.0 to 1.0,
-            1.0 to -1.0,
-            Double.POSITIVE_INFINITY to Double.POSITIVE_INFINITY,
-            Double.POSITIVE_INFINITY to Double.NEGATIVE_INFINITY,
-            Double.NEGATIVE_INFINITY to Double.NEGATIVE_INFINITY,
-            Double.NaN to 0.0,
-            Double.NaN to 1.0,
-            Double.NaN to Double.NaN,
-            Double.NaN to -Double.NaN,
-            -Double.NaN to -Double.NaN,
-            Double.NaN to Double.POSITIVE_INFINITY,
-        )
+        val cases =
+            listOf(
+                0.0 to 0.0,
+                -0.0 to -0.0,
+                0.0 to -0.0,
+                1.0 to (1.0 + epsilon),
+                0.0 to minPositive,
+                0.0 to epsilon,
+                1.0 to 1.0,
+                1.0 to -1.0,
+                Double.POSITIVE_INFINITY to Double.POSITIVE_INFINITY,
+                Double.POSITIVE_INFINITY to Double.NEGATIVE_INFINITY,
+                Double.NEGATIVE_INFINITY to Double.NEGATIVE_INFINITY,
+                Double.NaN to 0.0,
+                Double.NaN to 1.0,
+                Double.NaN to Double.NaN,
+                Double.NaN to -Double.NaN,
+                -Double.NaN to -Double.NaN,
+                Double.NaN to Double.POSITIVE_INFINITY,
+            )
 
         for (case in cases) {
             val pointA = NSPoint.new(case.first, case.second)

@@ -31,6 +31,11 @@ typealias SRefCon = Long
 typealias OSErr = Short
 
 /**
+ * Objective-C selector type.
+ */
+typealias Sel = String
+
+/**
  * Number of seconds between January 1, 1970 and January 1, 2001.
  */
 const val NSTimeIntervalSince1970: Double = 978307200.0

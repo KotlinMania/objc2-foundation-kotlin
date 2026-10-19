@@ -38,3 +38,8 @@ class MainThreadMarker private constructor() {
         fun new(): MainThreadMarker = MainThreadMarker()
     }
 }
+
+/**
+ * A queue that regulates the execution of operations.
+ */
+open class NSOperationQueue : NSObject()
